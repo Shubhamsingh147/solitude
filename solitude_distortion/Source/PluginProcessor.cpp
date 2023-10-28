@@ -166,7 +166,8 @@ bool Solitude_DistortionAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* Solitude_DistortionAudioProcessor::createEditor()
 {
-    return new Solitude_DistortionAudioProcessorEditor (*this);
+    //return new Solitude_DistortionAudioProcessorEditor (*this);
+    return new juce::GenericAudioProcessorEditor(*this);
 }
 
 //==============================================================================
@@ -181,6 +182,18 @@ void Solitude_DistortionAudioProcessor::setStateInformation (const void* data, i
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
+}
+
+juce::AudioProcessorValueTreeState::ParameterLayout Solitude_DistortionAudioProcessor::createParameterLayout()
+{
+    APVTS::ParameterLayout layout;
+    using namespace juce;
+    layout.add(std::make_unique<AudioParameterBool>("isCranked", "Crank", false, ""));
+    layout.add(std::make_unique<AudioParameterFloat>("crunch", "Crunch", 1, 10, 1));
+    layout.add(std::make_unique<AudioParameterInt>("reverb", "Reverb", 0, 10, 3));
+    layout.add(std::make_unique<AudioParameterInt>("delayTimeMs", "DelayTimeMs", 0, 2500, 1));
+    layout.add(std::make_unique<AudioParameterInt>("delayFeedbacks", "DelayFeedbacks", 0, 10, 1));
+    return layout;
 }
 
 //==============================================================================
